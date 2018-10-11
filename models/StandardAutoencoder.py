@@ -26,7 +26,11 @@ from utils.utility import *
 from utils.rank_io import *
 from inputs.autoencoder_generator import AutoencoderGenerator
 from losses.autoencoder_losses import loss_wrapper
+import tensorflow
 
+config = tensorflow.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tensorflow.Session(config = config)
 
 class StandardAutoencoder(object):    
     def check(self):

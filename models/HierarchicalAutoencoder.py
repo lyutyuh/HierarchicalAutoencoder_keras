@@ -26,6 +26,11 @@ from utils.rank_io import read_embedding, convert_embed_2_numpy
 import numpy as np
 from losses.autoencoder_losses import loss_wrapper
 
+import tensorflow
+
+config = tensorflow.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tensorflow.Session(config = config)
 
 class HierarchicalAttentionAutoencoder(object):    
     def check(self):
