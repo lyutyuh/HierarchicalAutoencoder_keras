@@ -3,10 +3,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 import sys
 sys.path.append('..')
+import numpy as np
 from keras.engine import Layer
 import keras.backend as K
 from keras.models import Sequential, Model
-from keras.models import model_from_json, model_from_yaml
+from keras.models import model_from_json
 from keras import activations
 from keras import initializers
 from keras import optimizers
@@ -17,15 +18,13 @@ from keras.layers import Reshape, Embedding, Dot, Add, Multiply, \
 from keras.optimizers import Adam
 import recurrentshop
 from recurrentshop import LSTMCell
-from models.model import BasicModel
 import layers
 from layers.Linear import Linear
 from layers.SplitLayer import SplitLayer
 from layers.Lengths2Mask import Lengths2Mask
 from utils.utility import *
-from utils.rank_io import read_embedding, convert_embed_2_numpy
+from utils.rank_io import *
 from inputs.autoencoder_generator import AutoencoderGenerator
-import numpy as np
 from losses.autoencoder_losses import loss_wrapper
 
 
@@ -225,28 +224,10 @@ class StandardAutoencoder(object):
         self.model = model
         return
 
-    
-def read_data(filename, word_dict = None):
-    data = {}
-    for line in open(filename):
-        line = line.strip().split()
-        tid = line[0]
-        if word_dict is None:
-            data[tid] = list(map(int, line[2:]))
-        else:
-            data[tid] = []
-            for w in line[2:]:
-                if w not in word_dict:
-                    word_dict[w] = len(word_dict)
-                data[tid].append(word_dict[w])
-    print('[%s]\n\tData size: %s' % (filename, len(data)), end='\n')
-    return data, word_dict
 
     
 def main():
-    import time
-    
-    
+    import time    
     datapath ='/mnt/E/WORK/DATA/200k_news_text/category_classification/corpus_preprocessed.txt'
     dataset, _ = read_data(datapath)
     
